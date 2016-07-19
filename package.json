@@ -1,7 +1,7 @@
 {
   "name": "gql-tools",
   "description": "GraphQL Tools for schema handling.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Alberto Mijares <almilo@almilo.es>",
   "license": "MIT",
   "bin": {
