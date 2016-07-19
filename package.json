@@ -13,5 +13,10 @@
   },
   "peerDependencies": {
     "graphql": "^0.6.1"
-  }
+  },
+  "keywords": [
+    "graphql",
+    "tools",
+    "cli"
+  ]
 }
