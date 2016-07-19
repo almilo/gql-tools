@@ -1,0 +1,17 @@
+{
+  "name": "gql-tools",
+  "description": "GraphQL Tools for schema handling.",
+  "version": "0.0.0",
+  "author": "Alberto Mijares <almilo@almilo.es>",
+  "license": "MIT",
+  "bin": {
+    "gqlschema": "cli.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "graphql-tools": "^0.6.0"
+  },
+  "peerDependencies": {
+    "graphql": "^0.6.1"
+  }
+}
