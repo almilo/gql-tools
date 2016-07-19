@@ -50,7 +50,7 @@ function fetchIntrospectionSchema(endpointUrl) {
 
     function checkStatus(response) {
         if (response.status !== 200) {
-            return Promise.reject(response.statusText);
+            return Promise.reject('HTTP error: ' + response.status + ', ' + response.statusText);
         }
 
         return response;
