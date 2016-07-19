@@ -22,5 +22,6 @@ npm install [-g] graphql
 ```
 
 ### Usage
-* **gqlschema**: generates the introspected schema and the schema AST of a given GraphQL schema language.
-  * **usage**: *gqlschema  <schema.txt>*
+* **gqlschema**: generates the introspected schema and the schema AST of a given GraphQL schema either in the schema
+language (file) or from a GraphQL endpoint (URL).
+  * **usage**: *gqlschema  <schema.txt | http://example.com/graphql>*

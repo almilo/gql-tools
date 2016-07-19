@@ -9,7 +9,7 @@ commander
     .usage([
         '<schema.txt> [options]',
         '',
-        '  Given a file with a GraphQL schema as text, generates the introspected schema as JSON file and / or the schema AST as JSON file.',
+        '  Given a file with a GraphQL schema in the schema language or the URL of a GraphQL endpoint, generates the introspected schema and / or the schema AST as JSON files.',
         '  By default, only the introspected schema is generated.',
         '  To select which files to generate use the "-i" and "-o" options.'
     ].join('\n'))
