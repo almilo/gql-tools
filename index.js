@@ -17,7 +17,9 @@ exports.generateIntrospectedSchema = function (schemaResource, outputFileName) {
         fetchIntrospectionSchema(schemaResource) :
         mockServer(read(schemaResource)).query(graphql.introspectionQuery);
 
-    promise.then(createWriter(outputFileName));
+    promise
+        .then(createWriter(outputFileName))
+        .catch(throwError);
 };
 
 exports.generateSchemaLanguage = function (schemaResource, outputFileName) {
@@ -27,7 +29,8 @@ exports.generateSchemaLanguage = function (schemaResource, outputFileName) {
 
     fetchIntrospectionSchema(schemaResource)
         .then(toSchemaLanguage)
-        .then(createWriter(outputFileName));
+        .then(createWriter(outputFileName))
+        .catch(throwError);
 
     function toSchemaLanguage(introspectionQueryResponse) {
         return graphql.printSchema(graphql.buildClientSchema(introspectionQueryResponse.data));
@@ -41,7 +44,17 @@ function fetchIntrospectionSchema(endpointUrl) {
     };
     var body = JSON.stringify({query: graphql.introspectionQuery});
 
-    return fetch(endpointUrl, {method: 'POST', body: body, headers: headers}).then(toJson);
+    return fetch(endpointUrl, {method: 'POST', body: body, headers: headers})
+        .then(checkStatus)
+        .then(toJson);
+
+    function checkStatus(response) {
+        if (response.status !== 200) {
+            return Promise.reject(response.statusText);
+        }
+
+        return response;
+    }
 
     function toJson(response) {
         return response.json();
@@ -58,4 +71,9 @@ function createWriter(fileName) {
 
         return fs.writeFileSync(fileName, stringContent);
     }
+}
+
+function throwError(error) {
+    console.error(error);
+    process.exit(1);
 }
