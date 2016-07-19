@@ -20,6 +20,20 @@ exports.generateIntrospectedSchema = function (schemaResource, outputFileName) {
     promise.then(createWriter(outputFileName));
 };
 
+exports.generateSchemaLanguage = function (schemaResource, outputFileName) {
+    if (!isUrl(schemaResource)) {
+        throw new Error('Only URLs are supported for schema language generation.');
+    }
+
+    fetchIntrospectionSchema(schemaResource)
+        .then(toSchemaLanguage)
+        .then(createWriter(outputFileName));
+
+    function toSchemaLanguage(introspectionQueryResponse) {
+        return graphql.printSchema(graphql.buildClientSchema(introspectionQueryResponse.data));
+    }
+};
+
 function fetchIntrospectionSchema(endpointUrl) {
     var headers = {
         'content-type': 'application/json',
@@ -40,6 +54,8 @@ function read(fileName) {
 
 function createWriter(fileName) {
     return function (content) {
-        return fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
+        var stringContent = typeof content !== 'string' ? JSON.stringify(content, null, 2) : content;
+
+        return fs.writeFileSync(fileName, stringContent);
     }
 }
