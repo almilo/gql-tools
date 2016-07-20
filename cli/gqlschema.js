@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
 var commander = require('commander');
-var pkg = require('./package.json');
-var gqlTools = require('./index');
+var pkg = require('../package.json');
+var gqlTools = require('../index');
 
 commander
     .version(pkg.version)

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GraphQL Schema Graph</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://wzrd.in/standalone/graphql"></script>
+    <script src="http://graphql-graph.herokuapp.com/index.js"></script>
+    <script>
+        function render(graphIFrame) {
+            fetch('schema')
+                    .then(function (response) {
+                        return response.text();
+                    })
+                    .then(function (schemaText) {
+                        renderSchemaGraph(graphql.parse(schemaText), graphIFrame);
+                    });
+        }
+    </script>
+    <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">GraphQL Schema Graph</a>
+        </div>
+    </div>
+</nav>
+<iframe id="graph" src="http://graphql-graph.herokuapp.com/" frameborder="0" onload="render(this)"></iframe>
+</body>
+</html>
