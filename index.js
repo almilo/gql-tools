@@ -5,11 +5,11 @@ var isUrl = require('is-url');
 var fetch = require('node-fetch');
 
 exports.generateSchemaAst = function (schemaResource, outputFileName) {
-    if (isUrl(schemaResource)) {
-        throw new Error('URLs not supported yet for schema AST generation.');
-    }
+    var promise = isUrl(schemaResource) ?
+        fetchIntrospectionSchema(schemaResource).then(fromIntrospectionToSchemaAst) :
+        Promise.resolve(graphql.parse(read(schemaResource)));
 
-    createWriter(outputFileName)(graphql.parse(read(schemaResource)));
+    writeToFile(promise, 'schema AST', outputFileName);
 };
 
 exports.generateIntrospectedSchema = function (schemaResource, outputFileName) {
@@ -17,25 +17,42 @@ exports.generateIntrospectedSchema = function (schemaResource, outputFileName) {
         fetchIntrospectionSchema(schemaResource) :
         mockServer(read(schemaResource)).query(graphql.introspectionQuery);
 
-    promise
-        .then(createWriter(outputFileName))
-        .catch(throwError);
+    writeToFile(promise, 'introspection schema', outputFileName);
 };
 
 exports.generateSchemaLanguage = function (schemaResource, outputFileName) {
-    if (!isUrl(schemaResource)) {
-        throw new Error('Only URLs are supported for schema language generation.');
-    }
+    var promise = isUrl(schemaResource) ?
+        fetchIntrospectionSchema(schemaResource).then(fromIntrospectionToSchemaLanguage) :
+        Promise.resolve(read(schemaResource));
 
-    fetchIntrospectionSchema(schemaResource)
-        .then(toSchemaLanguage)
+    writeToFile(promise, 'schema file', outputFileName);
+};
+
+function writeToFile(promise, what, outputFileName) {
+    promise
         .then(createWriter(outputFileName))
+        .then(createLogger('GraphQL ' + what + ' written to file: "' + outputFileName + '".'))
         .catch(throwError);
 
-    function toSchemaLanguage(introspectionQueryResponse) {
-        return graphql.printSchema(graphql.buildClientSchema(introspectionQueryResponse.data));
+    function createWriter(fileName) {
+        return function (content) {
+            var stringContent = typeof content !== 'string' ? JSON.stringify(content, null, 2) : content;
+
+            return fs.writeFileSync(fileName, stringContent);
+        }
     }
-};
+
+    function createLogger(message) {
+        return function () {
+            console.log(message);
+        }
+    }
+
+    function throwError(error) {
+        console.error(error);
+        process.exit(1);
+    }
+}
 
 function fetchIntrospectionSchema(endpointUrl) {
     var headers = {
@@ -45,10 +62,10 @@ function fetchIntrospectionSchema(endpointUrl) {
     var body = JSON.stringify({query: graphql.introspectionQuery});
 
     return fetch(endpointUrl, {method: 'POST', body: body, headers: headers})
-        .then(checkStatus)
+        .then(checkHttpStatus)
         .then(toJson);
 
-    function checkStatus(response) {
+    function checkHttpStatus(response) {
         if (response.status !== 200) {
             return Promise.reject('HTTP error: ' + response.status + ', ' + response.statusText);
         }
@@ -61,19 +78,14 @@ function fetchIntrospectionSchema(endpointUrl) {
     }
 }
 
+function fromIntrospectionToSchemaLanguage(introspection) {
+    return graphql.printSchema(graphql.buildClientSchema(introspection.data));
+}
+
+function fromIntrospectionToSchemaAst(introspection) {
+    return graphql.parse(fromIntrospectionToSchemaLanguage(introspection));
+}
+
 function read(fileName) {
     return fs.readFileSync(fileName, 'utf-8');
-}
-
-function createWriter(fileName) {
-    return function (content) {
-        var stringContent = typeof content !== 'string' ? JSON.stringify(content, null, 2) : content;
-
-        return fs.writeFileSync(fileName, stringContent);
-    }
-}
-
-function throwError(error) {
-    console.error(error);
-    process.exit(1);
 }
