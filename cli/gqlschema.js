@@ -2,7 +2,7 @@
 
 var commander = require('commander');
 var pkg = require('../package.json');
-var gqlTools = require('../index');
+var schema = require('../schema');
 
 commander
     .version(pkg.version)
@@ -22,13 +22,13 @@ commander
     .option('-v --schema-language-output-file [outputFile]', 'name for the output file of the schema in schema language, defaults to "schema.graphql"', 'schema.graphql')
     .action((schemaResource, options) => {
         if (options.generateIntrospectedSchema || (!options.generateIntrospectedSchema && !options.generateSchemaAst && !options.generateSchemaLanguage)) {
-            gqlTools.generateIntrospectedSchema(schemaResource, options.introspectedSchemaOutputFile);
+            schema.generateIntrospectedSchema(schemaResource, options.introspectedSchemaOutputFile);
         }
         if (options.generateSchemaAst) {
-            gqlTools.generateSchemaAst(schemaResource, options.schemaAstOutputFile);
+            schema.generateSchemaAst(schemaResource, options.schemaAstOutputFile);
         }
         if (options.generateSchemaLanguage) {
-            gqlTools.generateSchemaLanguage(schemaResource, options.schemaLanguageOutputFile);
+            schema.generateSchemaLanguage(schemaResource, options.schemaLanguageOutputFile);
         }
     })
     .parse(process.argv);
