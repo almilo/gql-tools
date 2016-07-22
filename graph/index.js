@@ -8,10 +8,11 @@ var livereload = require('livereload');
 module.exports = function (schemaTextFileName, port) {
     port = port || 3000;
 
+    var schemaTextFileNameExtension = path.extname(schemaTextFileName).slice(1);
+    var livereloadConfiguration = {exts: [schemaTextFileNameExtension]};
+
     http.createServer(staticContentHandler).listen(port, onServerReady);
-    livereload.createServer({
-        exts: [path.extname(schemaTextFileName).slice(1)]
-    }).watch(schemaTextFileName);
+    livereload.createServer(livereloadConfiguration).watch(schemaTextFileName);
 
     function staticContentHandler(req, res) {
         var requestPath = getPath(req);
