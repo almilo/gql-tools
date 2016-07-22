@@ -6,7 +6,7 @@ var fs = require('fs');
 var livereload = require('livereload');
 
 module.exports = function (schemaTextFileName, port) {
-    port = port || 3000;
+    port = port || 4000;
 
     var schemaTextFileNameExtension = path.extname(schemaTextFileName).slice(1);
     var livereloadConfiguration = {exts: [schemaTextFileNameExtension]};

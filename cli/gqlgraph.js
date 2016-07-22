@@ -11,7 +11,7 @@ commander
         '',
         '  "schema.txt" must be a GraphQL schema file in the schema language.'
     ].join('\n'))
-    .option('-p --port [port]', 'server port, defaults to 3000.', parseInt)
+    .option('-p --port [port]', 'server port, defaults to 4000.', parseInt)
     .action((schemaTextFileName, options) => graph(schemaTextFileName, options.port))
     .parse(process.argv);
 
