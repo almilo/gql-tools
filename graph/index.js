@@ -5,7 +5,7 @@ var fs = require('fs');
 var livereload = require('livereload');
 var openUrl = require('../lib').openUrl;
 
-module.exports = function (schemaTextFileName, port) {
+module.exports = function (schemaTextFileName, port, openInBrowser) {
     port = port || 4000;
 
     var schemaTextFileNameExtension = path.extname(schemaTextFileName).slice(1);
@@ -40,7 +40,9 @@ module.exports = function (schemaTextFileName, port) {
         console.log('Graph server listening on port:', port);
         console.log('Opening graph in browser...');
 
-        openUrl(' http://localhost:' + port);
+        if (openInBrowser) {
+            openUrl(' http://localhost:' + port);
+        }
     }
 };
 
