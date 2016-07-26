@@ -65,9 +65,9 @@ module.exports = function (schemaTextFileName, mocksFileName, port, openInBrowse
         }
 
         console.log('GraphQL server listening on port:', port);
-        console.log('Opening GraphiQL console in browser...');
 
         if (openInBrowser) {
+            console.log('Opening GraphiQL console in browser...');
             openUrl(' http://localhost:' + port);
         }
     }
