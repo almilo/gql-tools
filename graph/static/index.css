@@ -1,0 +1,16 @@
+#graph text {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+#graph .node rect {
+    stroke: #999;
+    fill: #fff;
+    stroke-width: 2px;
+}
+
+#graph .edgePath path {
+    stroke: #333;
+    stroke-width: 2px;
+}

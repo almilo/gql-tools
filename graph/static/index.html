@@ -5,17 +5,16 @@
     <title>GraphQL Schema Graph</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
-    <script src="https://wzrd.in/standalone/graphql"></script>
-    <script src="http://graphql-graph.herokuapp.com/index.js"></script>
+    <script src="https://npmcdn.com/d3@3.5.17/d3.min.js"></script>
+    <script src="https://npmcdn.com/dagre@0.7.4/dist/dagre.min.js"></script>
+    <script src="https://npmcdn.com/dagre-d3@0.4.17/dist/dagre-d3.min.js"></script>
+    <script src="https://wzrd.in/standalone/graphql@0.6.2"></script>
+    <script src="index.js"></script>
     <script>
-        function render(graphIFrame) {
-            fetch('schema')
-                    .then(function (response) {
-                        return response.text();
-                    })
-                    .then(function (schemaText) {
-                        renderSchemaGraph(graphql.parse(schemaText), graphIFrame);
-                    });
+        function render() {
+            fetch('/schema')
+                    .then(response => response.text())
+                    .then(schemaText => renderSchemaGraph(schemaText, 'graph'));
         }
     </script>
     <script>
@@ -24,7 +23,7 @@
         document.write('<script src="' + livereloadUrl + '"></' + 'script>');
     </script>
 </head>
-<body>
+<body onload="render()">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -32,6 +31,6 @@
         </div>
     </div>
 </nav>
-<iframe id="graph" src="http://graphql-graph.herokuapp.com/" frameborder="0" onload="render(this)"></iframe>
+<svg id="graph" width="800" height="600"></svg>
 </body>
 </html>

@@ -12,7 +12,7 @@ module.exports = function (schemaTextFileName, port, openInBrowser) {
     var livereloadConfiguration = {exts: [schemaTextFileNameExtension]};
 
     express()
-        .use(express.static(__dirname))
+        .use(express.static(path.join(__dirname, 'static')))
         .get('/schema', schemaHandler)
         .listen(port, onServerReady);
     livereload.createServer(livereloadConfiguration).watch(schemaTextFileName);
