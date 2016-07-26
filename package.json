@@ -6,10 +6,13 @@
   "license": "MIT",
   "bin": {
     "gqlschema": "./cli/gqlschema.js",
-    "gqlgraph": "./cli/gqlgraph.js"
+    "gqlgraph": "./cli/gqlgraph.js",
+    "gqlserver": "./cli/gqlserver.js"
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.3",
     "graphql-tools": "^0.6.0",
     "is-url": "^1.2.2",
     "livereload": "^0.5.0",

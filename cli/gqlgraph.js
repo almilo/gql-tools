@@ -9,7 +9,7 @@ commander
     .usage([
         '<schema.txt> [options]',
         '',
-        '  "schema.txt" must be a GraphQL schema file in the schema language.'
+        '  Given a file with a GraphQL schema in the schema language, creates a livereload-enabled graphical visualization.'
     ].join('\n'))
     .option('-p --port [port]', 'server port, defaults to 4000.', parseInt)
     .action((schemaTextFileName, options) => graph(schemaTextFileName, options.port))

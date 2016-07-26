@@ -1,9 +1,9 @@
 var http = require('http');
 var url = require('url');
 var path = require('path');
-var exec = require('child_process').exec;
 var fs = require('fs');
 var livereload = require('livereload');
+var openUrl = require('../lib').openUrl;
 
 module.exports = function (schemaTextFileName, port) {
     port = port || 4000;
@@ -37,10 +37,10 @@ module.exports = function (schemaTextFileName, port) {
             process.exit(1);
         }
 
-        console.log('Server listening on port:', port);
+        console.log('Graph server listening on port:', port);
         console.log('Opening graph in browser...');
 
-        exec((isWindows() ? 'start' : 'open') + ' http://localhost:' + port);
+        openUrl(' http://localhost:' + port);
     }
 };
 
@@ -58,8 +58,4 @@ function getMimeType(fileName) {
     var extension = path.extname(fileName).slice(1).toLowerCase();
 
     return mimeTypes[extension] || 'text/plain';
-}
-
-function isWindows() {
-    return /^win/.test(process.platform);
 }
