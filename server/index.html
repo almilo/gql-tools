@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GraphQL Server Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        iframe {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<iframe src="/graphql" frameborder="0"></iframe>
+<script>
+    const graphUrl = 'http://' + (location.host || 'localhost').split(':')[0] + ':4000';
+
+    document.write('<iframe src="' + graphUrl + '" frameborder="0"></iframe>');
+</script>
+</body>
+</html>

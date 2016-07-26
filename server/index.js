@@ -15,9 +15,6 @@ module.exports = function (schemaTextFileName, port) {
     graphqlTools.addMockFunctionsToSchema({schema: schema});
 
     express()
-        .get('/', function (req, res) {
-            res.redirect(graphqlEndpoint);
-        })
         .use(express.static(__dirname))
         .use(graphqlEndpoint, graphqlHTTP({
             schema: schema,
